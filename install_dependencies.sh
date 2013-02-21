@@ -23,4 +23,6 @@ cat /etc/apache2/sites-available/default
 sudo a2enmod rewrite
 sudo service apache2 restart
 
-curl http://localhost/
+# Configure custom domain
+echo "127.0.0.1 mydomain.local" | sudo tee --append /etc/hosts
+
