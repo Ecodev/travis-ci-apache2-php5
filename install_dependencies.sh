@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Install everything
-sudo apt-get install -qq libapache2-mod-php5
+sudo apt-get install -qq apache2
 
 # Configure Apache
 WEBROOT="$(pwd)/htdocs"
@@ -20,6 +20,29 @@ sudo echo "<VirtualHost *:80>
         </Directory>
 </VirtualHost>" | sudo tee /etc/apache2/sites-available/default > /dev/null
 cat /etc/apache2/sites-available/default
+
+# Configure PHP
+echo "export PATH=/home/vagrant/.phpenv/bin:$PATH" | sudo tee -a /etc/apache2/envvars > /dev/null
+echo "# PHPENV Setup
+<IfModule alias_module>
+    ScriptAlias /phpenv '/home/vagrant/.phpenv/shims'
+    <Directory '/home/vagrant/.phpenv/shims'>
+        Order allow,deny
+        Allow from all
+    </Directory>
+</IfModule>
+
+<IfModule mime_module>
+    AddType application/x-httpd-php5 .php
+</IfModule>
+
+<IfModule dir_module>
+    DirectoryIndex index.php index.html
+</IfModule>
+
+Action application/x-httpd-php5 '/phpenv/php-cgi'" | sudo tee /etc/apache2/conf.d/phpconfig > /dev/null
+
+
 sudo a2enmod rewrite
 sudo service apache2 restart
 
