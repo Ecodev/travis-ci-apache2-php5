@@ -42,8 +42,8 @@ echo "# PHPENV Setup
 
 Action application/x-httpd-php5 '/phpenv/php-cgi'" | sudo tee /etc/apache2/conf.d/phpconfig > /dev/null
 
-
 sudo a2enmod rewrite
+sudo a2enmod actions
 sudo service apache2 restart
 
 # Configure custom domain
