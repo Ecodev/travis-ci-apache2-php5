@@ -26,3 +26,4 @@ sudo service apache2 restart
 # Configure custom domain
 echo "127.0.0.1 mydomain.local" | sudo tee --append /etc/hosts
 
+echo "TRAVIS_PHP_VERSION: $TRAVIS_PHP_VERSION"
