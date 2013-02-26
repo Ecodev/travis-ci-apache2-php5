@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Install everything
-sudo apt-get install -qq apache2
+sudo apt-get install -qq apache2 php-cgi
 
 # Configure Apache
 WEBROOT="$(pwd)/htdocs"
