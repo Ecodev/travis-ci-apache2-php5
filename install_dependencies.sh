@@ -5,7 +5,9 @@ sudo apt-get install -qq apache2 php5-cgi
 
 # Configure Apache
 WEBROOT="$(pwd)/htdocs"
+CGIROOT=`dirname "$(which php-cgi)"`
 echo "WEBROOT: $WEBROOT"
+echo "CGIROOT: $CGIROOT"
 sudo echo "<VirtualHost *:80>
         DocumentRoot $WEBROOT
         <Directory />
@@ -18,29 +20,15 @@ sudo echo "<VirtualHost *:80>
                 Order allow,deny
                 allow from all
         </Directory>
+
+		# Configure PHP as CGI
+		ScriptAlias /local-bin $CGIROOT
+		DirectoryIndex index.php index.html
+		AddType application/x-httpd-php5 .php
+		Action application/x-httpd-php5 '/local-bin/php-cgi'
+
 </VirtualHost>" | sudo tee /etc/apache2/sites-available/default > /dev/null
 cat /etc/apache2/sites-available/default
-
-# Configure PHP
-echo "export PATH=/home/vagrant/.phpenv/bin:$PATH" | sudo tee -a /etc/apache2/envvars > /dev/null
-echo "# PHPENV Setup
-<IfModule alias_module>
-    ScriptAlias /phpenv '/home/vagrant/.phpenv/shims'
-    <Directory '/home/vagrant/.phpenv/shims'>
-        Order allow,deny
-        Allow from all
-    </Directory>
-</IfModule>
-
-<IfModule mime_module>
-    AddType application/x-httpd-php5 .php
-</IfModule>
-
-<IfModule dir_module>
-    DirectoryIndex index.php index.html
-</IfModule>
-
-Action application/x-httpd-php5 '/phpenv/php-cgi'" | sudo tee /etc/apache2/conf.d/phpconfig > /dev/null
 
 sudo a2enmod rewrite
 sudo a2enmod actions
