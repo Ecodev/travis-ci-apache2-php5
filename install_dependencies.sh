@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
 
 # Install everything
-sudo apt-get install -qq apache2 php5-fpm
-
-php5-fpm --version
-exit 
+sudo apt-get install -qq apache2 php5-cgi
 
 # Configure Apache
 WEBROOT="$(pwd)/htdocs"
