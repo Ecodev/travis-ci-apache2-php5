@@ -1,10 +1,9 @@
 language: php
 php:
   - "5.4"
-  - "5.5"
 
 before_script:
   - ./install_dependencies.sh
   
 
-script: curl -s http://localhost/ && sudo cat /var/log/apache2/error.log && curl -s http://localhost/ | grep -F "hello world! $TRAVIS_PHP_VERSION" && curl -s http://localhost/non_existing_url_is_redirected | grep -F "hello world! $TRAVIS_PHP_VERSION" && curl -s http://mydomain.local/ | grep -F "hello world! $TRAVIS_PHP_VERSION"
+script: compass --version
